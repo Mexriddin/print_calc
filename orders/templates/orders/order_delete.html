@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <form action="" method="post">{% csrf_token %}
+          <p>Are you sure you want to delete {{ order.client_name }}'s order?</p>
+          <a class="btn btn-warning" href="{% url 'home' %}">
+              Back
+          </a>
+            <input class="btn btn-danger" type="submit" value="Confirm">
+        </form>
+
+    </div>
+
+{% endblock content %}

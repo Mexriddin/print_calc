@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block orders %}
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<table class="table table-sm" >
+					<tr>
+						<th>Company</th>
+						<th>Client</th>
+						<th>Client phone</th>
+						<th>Count</th>
+						<th>Date Order</th>
+						<th>Paper</th>
+						<th>Format paper</th>
+						<th>Printer paper</th>
+						<th>Total price</th>
+						<th>Price for one</th>
+						<th>Update</th>
+						<th>Delete</th>
+					</tr>
+
+					{% for order in orders %}
+						<tr>
+							<td>{{order.client_company}}</td>
+							<td>{{order.client_name}}</td>
+							<td>{{order.client_phone}}</td>
+							<td>{{order.count}}</td>
+							<td>{{order.date_created|date:"Y-m-d"}}</td>
+							<td>{{order.paper.name}}</td>
+							<td>{{order.format_p.name}}</td>
+							<td>{{order.print_paper.name}}</td>
+							<td>{{order.total_price}} so`m</td>
+							<td>{{order.price_for_one}} so`m</td>
+							<td><a class="btn btn-sm btn-info" href="{% url 'order_edit' order.id  %}">Update</a></td>
+							<td><a class="btn btn-sm btn-danger" href="{% url 'order_delete' order.id %}">Delete</a></td>
+						</tr>
+					{% endfor %}
+					</table>
+				</div>
+			</div>
+        </div>
+	</div>
+{% endblock orders %}
