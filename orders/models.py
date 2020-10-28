@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+import math
 # from django.contrib.auth.models import User
 
 
@@ -25,31 +26,27 @@ from django.urls import reverse
 class Paper(models.Model):
     """Qog`ozlar"""
     name = models.CharField(max_length=100, null=True)
-    # price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     price = models.FloatField(max_length=20,)
-    # category = models.CharField(max_length=200, null=True, choices=CATEGORY)
-    # description = models.CharField(max_length=200, null=True, blank=True)
-    # date_created = models.DateTimeField(auto_now_add=True, null=True)
-
+    format_paper = models.CharField(max_length=100,null=True)
     def __str__(self):
-        return self.name
+        return self.name + "("+self.format_paper+")"
 
     class Meta:
         verbose_name = "Бумага"
         verbose_name_plural = "Бумаги"
 
 
-class Format(models.Model):
+class Devision(models.Model):
     """Formatlar"""
     name = models.CharField(max_length=100, null=True)
-    format_paper = models.IntegerField(default=1)
+    division = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Формат"
-        verbose_name_plural = "Форматы"
+        verbose_name = "Деление"
+        verbose_name_plural = "Деление"
 
 
 class Print_paper(models.Model):
@@ -78,7 +75,7 @@ class Order(models.Model):
     client_company = models.CharField(max_length=200, null=True)
     count = models.IntegerField(default=1)
     paper = models.ForeignKey(Paper, null=True, on_delete=models.SET_NULL)
-    format_p = models.ForeignKey(Format, null=True,on_delete=models.CASCADE)
+    devision_paper = models.ForeignKey(Devision, null=True,on_delete=models.CASCADE)
     print_paper = models.ForeignKey(Print_paper, null=True,on_delete=models.CASCADE)
     # total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_price = models.FloatField(max_length=20, blank=True, null=True, default=True)
@@ -97,15 +94,15 @@ class Order(models.Model):
         verbose_name_plural = "Заказы"
 
     def save(self, *args, **kwargs):
-        price_for_paper = ((self.paper.price) / self.format_p.format_paper) * self.count
+        price_for_paper = ((self.paper.price) / self.devision_paper.division) * self.count
         print("price_for_paper:{}".format(price_for_paper))
         price_for_print = self.print_paper.price_form_print
-        print("price_for_paper1:{}".format(price_for_print))
+        print("price_for_form:{}".format(price_for_print))
         if self.count <= 1000:
             price_for_print += self.print_paper.price_if_before_1000
         elif self.count >= 1000:
-            price_for_print += (self.print_paper.price_if_before_1000 + ((self.count - 1000)/1000)*self.print_paper.price_if_after_1000)
-        print("price_for_paper2:{}".format(price_for_print))
+            price_for_print += (self.print_paper.price_if_before_1000 + (math.ceil((self.count - 1000)/1000))*self.print_paper.price_if_after_1000)
+        print("price_for_print:{}".format(price_for_print))
         total_price = price_for_paper + price_for_print
         self.total_price = total_price
         self.price_for_one = total_price / self.count
