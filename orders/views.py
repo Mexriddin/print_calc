@@ -1,4 +1,4 @@
-# from django.shortcuts import render
+# from django.shortcuts import redirect
 from django.views.generic import ListView, DeleteView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from .models import *
@@ -15,13 +15,13 @@ class OrdersView(ListView):
 class OrderCreateView(CreateView):
     model = Order
     template_name = 'orders/order_new.html'
-    fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'format_p', 'print_paper']
+    fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'devision_paper', 'print_paper']
 
 
 class OrderUpdateView(UpdateView):
     model = Order
     template_name = 'orders/order_edit.html'
-    fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'format_p', 'print_paper']
+    fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'devision_paper', 'print_paper']
 
 
 class OrderDeleteView(DeleteView):
