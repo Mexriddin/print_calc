@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block orders %}
+<div class="d-flex justify-content-end m-2">
+	<a type="button" class="btn btn-success " href="{% url 'order_new' %}">Add Order</a>
+
+</div>
+
 <div class="container-fluid">
 		<div class="row">
 			<div class="col-md">

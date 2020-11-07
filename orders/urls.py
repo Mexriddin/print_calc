@@ -11,6 +11,7 @@ urlpatterns = [
    path('order/<int:pk>/edit/', OrderUpdate, name='order_edit'),
    # path('order/<int:pk>/delete/', OrderDeleteView.as_view(), name='order_delete'),
    path('order/<int:pk>/delete/', OrderDelete, name='order_delete'),
+   path('user/', userPage, name='user-page'),
 
 ]
 

@@ -9,7 +9,6 @@
 
 </style>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -20,6 +19,8 @@
         </li>
     </ul>
   </div>
-  <a type="button" class="btn btn-success" href="{% url 'order_new' %}">Add Order</a>
+  <span class="hello-msg" >Hello, {{request.user}}</span>
+  <span><a class="btn btn-warning mx-3" href="{% url 'logout' %}">Log out</a></span>
+
 
 </nav>

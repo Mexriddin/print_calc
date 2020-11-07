@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+		<div class="col-md">
+			<div class="card card-body">
+				<table class="table table-sm">
+					<tr>
+						<th>Company</th>
+						<th>Client</th>
+						<th>Count</th>
+						<th>Date Order</th>
+						<th>Paper</th>
+						<th>Format paper</th>
+						<th>Devision paper</th>
+						<th>Printer paper</th>
+					</tr>
+					{% for order in orders %}
+						<tr>
+							<td>{{order.client_company}}</td>
+							<td>{{order.client_name}}</td>
+							<td>{{order.count}}</td>
+							<td>{{order.date_created|date:"Y-m-d"}}</td>
+							<td>{{order.paper.name}}</td>
+							<td>{{order.paper.format_paper}}</td>
+							<td>{{order.devision_paper.name}}</td>
+							<td>{{order.print_paper.name}}</td>
+						</tr>
+					{% endfor%}
+				</table>
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
