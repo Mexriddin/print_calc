@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <img class="site-logo" src="http://regprint.uz/wp-content/uploads/2019/07/RegPrint-logo-2.png"
+             alt="REGPRINT" data-retina="http://regprint.uz/wp-content/uploads/2019/07/RegPrint-logo-2.png">
+        Admin Area
+    </h1>
+{% endblock %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}

@@ -6,28 +6,13 @@ import math
 
 # Create your models here.
 
-# class Client(models.Model):
-#     """Kliyentlar"""
-#     # user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=200, null=True)
-#     phone = models.CharField(max_length=100, null=True)
-#     company = models.CharField(max_length=200, null=True)
-#     # email = models.CharField(max_length=200, null=True)
-#     # profile_pic = models.ImageField(default="profile.png", null=True, blank=True)
-#     # date_created = models.DateTimeField(auto_now_add=True, null=True)
-#
-#     def __str__(self):
-#         return self.company + " " + self.name
-#
-#     class Meta:
-#         verbose_name = "Клиент"
-#         verbose_name_plural = "Клиенты"
 
 class Paper(models.Model):
-    """Qog`ozlar"""
+    """ Papers """
     name = models.CharField(max_length=100, null=True)
     price = models.FloatField(max_length=20,)
-    format_paper = models.CharField(max_length=100,null=True)
+    format_paper = models.CharField(max_length=100, null=True)
+
     def __str__(self):
         return self.name + "("+self.format_paper+")"
 
@@ -37,7 +22,7 @@ class Paper(models.Model):
 
 
 class Devision(models.Model):
-    """Formatlar"""
+    """ Forms """
     name = models.CharField(max_length=100, null=True)
     division = models.IntegerField(default=1)
 
@@ -50,11 +35,9 @@ class Devision(models.Model):
 
 
 class Print_paper(models.Model):
-    """Printerga ketadigan xarajatlar"""
+    """ Costs for print """
     name = models.CharField(max_length=200, null=True)
-    # price_if_before_1000 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # price_if_after_1000 = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # price_form_print = models.DecimalField( max_digits=10, decimal_places=2, default=0)
+    price_form_print = models.DecimalField( max_digits=10, decimal_places=2, default=0)
     price_if_before_1000 = models.FloatField(max_length=20)
     price_if_after_1000 = models.FloatField(max_length=20)
     price_form_print = models.FloatField(max_length=20)
@@ -68,8 +51,7 @@ class Print_paper(models.Model):
 
 
 class Order(models.Model):
-    """Zakazlar"""
-    # client = models.ForeignKey(Client, null=True, on_delete=models.SET_NULL)
+    """ Orders """
     client_name = models.CharField(max_length=200, null=True)
     client_phone = models.CharField(max_length=100, null=True)
     client_company = models.CharField(max_length=200, null=True)
@@ -77,9 +59,7 @@ class Order(models.Model):
     paper = models.ForeignKey(Paper, null=True, on_delete=models.SET_NULL)
     devision_paper = models.ForeignKey(Devision, null=True,on_delete=models.CASCADE)
     print_paper = models.ForeignKey(Print_paper, null=True,on_delete=models.CASCADE)
-    # total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_price = models.FloatField(max_length=20, blank=True, null=True, default=True)
-    # price_for_one = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     price_for_one = models.FloatField(max_length=20, blank=True, null=True, default=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -93,16 +73,17 @@ class Order(models.Model):
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
 
+    """ Calculate cost and save in orders """
     def save(self, *args, **kwargs):
         price_for_paper = ((self.paper.price) / self.devision_paper.division) * self.count
-        print("price_for_paper:{}".format(price_for_paper))
+        # print("price_for_paper:{}".format(price_for_paper))
         price_for_print = self.print_paper.price_form_print
-        print("price_for_form:{}".format(price_for_print))
+        # print("price_for_form:{}".format(price_for_print))
         if self.count <= 1000:
             price_for_print += self.print_paper.price_if_before_1000
         elif self.count >= 1000:
             price_for_print += (self.print_paper.price_if_before_1000 + (math.ceil((self.count - 1000)/1000))*self.print_paper.price_if_after_1000)
-        print("price_for_print:{}".format(price_for_print))
+        # print("price_for_print:{}".format(price_for_print))
         total_price = price_for_paper + price_for_print
         self.total_price = total_price
         self.price_for_one = total_price / self.count

@@ -1,14 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
 from .decorators import allowed_users, admin_only
 from .forms import *
 
-from django.contrib import messages
-from django.views.generic import ListView, DeleteView, CreateView, UpdateView
-from django.urls import reverse_lazy
+
+# Create your views here.
 
 
+""" Page for users """
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def userPage(request):
@@ -18,18 +17,7 @@ def userPage(request):
     return render(request, 'orders/user.html', contex)
 
 
-
-
-
-# Create your views here.
-
-# class OrdersView(ListView):
-#     model = Order
-#     queryset = Order.objects.all().order_by("-date_created")
-#     template_name = 'orders/orders.html'
-#     context_object_name = 'orders'
-
-
+""" Orders """
 @login_required(login_url='login')
 @admin_only
 def OrderList(request):
@@ -37,11 +25,8 @@ def OrderList(request):
     context = {'orders': orders}
     return render(request, 'orders/orders.html', context)
 
-# class OrderCreateView(CreateView):
-#     model = Order
-#     template_name = 'orders/order_new.html'
-#     fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'devision_paper', 'print_paper']
 
+""" Order Create """
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def OrderCreate(request):
@@ -55,15 +40,7 @@ def OrderCreate(request):
     return render(request, 'orders/order_new.html', context=context)
 
 
-
-# class OrderUpdateView(UpdateView):
-#     model = Order
-#     template_name = 'orders/order_edit.html'
-#     fields = ['client_name', 'client_phone', 'client_company', 'count', 'paper', 'devision_paper', 'print_paper']
-#
-
-
-
+""" Order Update """
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def OrderUpdate(request, pk):
@@ -78,11 +55,7 @@ def OrderUpdate(request, pk):
     return render(request, 'orders/order_edit.html', context=context)
 
 
-# class OrderDeleteView(DeleteView):
-#     model = Order
-#     template_name = 'orders/order_delete.html'
-#     success_url = reverse_lazy('home')
-
+""" Order Delete """
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def OrderDelete(request, pk):
